@@ -1195,7 +1195,7 @@ bot.dialog('/Gettingfeedback', [
                     }
                     console.log('1311', err);
                     console.log('1312', db);
-                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '5 Star'}]);
+                    db.collection('feedback_tivoli').insert([{userID: '12345', feedback: '5 Star'}]);
                     console.log("Connected correctly to server for intent update for Greeting");
                     
                     db.close();
@@ -1211,7 +1211,7 @@ bot.dialog('/Gettingfeedback', [
                     if (err) {
                         throw (err);
                     }
-                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '4 Star'}]);
+                    db.collection('feedback_tivoli').insert([{userID: '12345', feedback: '4 Star'}]);
                     console.log("Connected correctly to server for intent update for Greeting");
                     db.close();
                 });
@@ -1228,7 +1228,7 @@ bot.dialog('/Gettingfeedback', [
                     if (err) {
                         throw (err);
                     }
-                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '3 Star'}]);
+                    db.collection('feedback_tivoli').insert([{userID: '12345', feedback: '3 Star'}]);
                     console.log("Connected correctly to server for intent update for Greeting");
                     db.close();
                 });
@@ -1244,7 +1244,7 @@ bot.dialog('/Gettingfeedback', [
                     if (err) {
                         throw (err);
                     }
-                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '2 Star'}]);
+                    db.collection('feedback_tivoli').insert([{userID: '12345', feedback: '2 Star'}]);
                     console.log("Connected correctly to server for intent update for Greeting");
                     db.close();
                 });
@@ -1260,7 +1260,7 @@ bot.dialog('/Gettingfeedback', [
                         //console.log('Issue in connecting MONGODB at feedback case 4');                    
                         throw (err);
                     }
-                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '1 Star'}]);
+                    db.collection('feedback_tivoli').insert([{userID: '12345', feedback: '1 Star'}]);
                     console.log("Connected correctly to server for intent update for Greeting");
                     db.close();
                 });
