@@ -37,8 +37,8 @@ let mailOptions = {
 
 // Connect to MongoDB
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://0.0.0.0:27017/shbm_test";
-
+//var url = "mongodb://0.0.0.0:27017/shbm_test";
+var url = "mongodb://fplmongodb:0PpoJZCtQJJi6ficNyLHYkK8ywZY8qumIwGp9aXl3sl6zBIemxVEPOJL2ldblFpT5Gtp1Q3lPd7BgCp68odWUg==@fplmongodb.documents.azure.com:10255/DB?ssl=true&sslverifycertificate=false";
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
@@ -789,7 +789,7 @@ bot.dialog('/MultipleServers', [
                                     'value': 'Test' 
                                 },
                                 {
-                                    'title': 'Dr'
+                                    'title': 'Dr',
                                     'value': 'Dr' 
                                 },
                                 {
