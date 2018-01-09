@@ -1189,21 +1189,17 @@ bot.dialog('/Gettingfeedback', [
                 console.log("0", results.response.index)
                 session.send("Thank you for your valuable feedback . I am happy that I was able to resolve your query with no concerns");
                 // session.send("Thank you for Valuable Feedback");
-                try {
-                    MongoClient.connect(url, function(err, db) {
-                        if (err) {
-                            throw (err);
-                        }
-                        console.log('1311', err);
-                        console.log('1312', db);
-                        db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '5 Star'}]);
-                        console.log("Connected correctly to server for intent update for Greeting");
-                        
-                        db.close();
-                    });
-                } catch (ex) {
-                    console.log('Issue in connecting MONGODB at feedback case 0', ex);
-                }
+                MongoClient.connect(url, function(err, db) {
+                    if (err) {
+                        throw (err);
+                    }
+                    console.log('1311', err);
+                    console.log('1312', db);
+                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '5 Star'}]);
+                    console.log("Connected correctly to server for intent update for Greeting");
+                    
+                    db.close();
+                });
                 session.endDialog();
                 session.replaceDialog('/SubmitFeedback');
                 break;
@@ -1211,18 +1207,14 @@ bot.dialog('/Gettingfeedback', [
                 console.log("1", results.response.index)
                 session.send("Thank you for your valuable feedback . I am still learning and I am happy that I was able to resolve your query ");
                 // session.send("Thank you for Valuable Feedback");
-                try {
-                    MongoClient.connect(url, function(err, db) {
-                        if (err) {
-                            throw (err);
-                        }
-                        db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '4 Star'}]);
-                        console.log("Connected correctly to server for intent update for Greeting");
-                        db.close();
-                    });
-                } catch (ex) {
-                    console.log('Issue in connecting MONGODB at feedback case 1', ex);
-                }
+                MongoClient.connect(url, function(err, db) {
+                    if (err) {
+                        throw (err);
+                    }
+                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '4 Star'}]);
+                    console.log("Connected correctly to server for intent update for Greeting");
+                    db.close();
+                });
                 //session.endConversation();
                 //session.end();
                 session.endDialog();
@@ -1232,18 +1224,14 @@ bot.dialog('/Gettingfeedback', [
                 console.log("2", results.response.index)
                 session.send("Thank you for your valuable feedback . I am still learning and I believe I will be able to service you better next time");
                 // session.send("Thank you for Valuable Feedback");
-                try {
-                    MongoClient.connect(url, function(err, db) {
-                        if (err) {
-                            throw (err);
-                        }
-                        db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '3 Star'}]);
-                        console.log("Connected correctly to server for intent update for Greeting");
-                        db.close();
-                    });
-                } catch (ex) {
-                    console.log('Issue in connecting MONGODB at feedback case 2', ex);
-                }
+                MongoClient.connect(url, function(err, db) {
+                    if (err) {
+                        throw (err);
+                    }
+                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '3 Star'}]);
+                    console.log("Connected correctly to server for intent update for Greeting");
+                    db.close();
+                });
                 //session.endDialogWithResult();
                 session.endDialog();
                 session.replaceDialog('/SubmitFeedback');
@@ -1252,18 +1240,14 @@ bot.dialog('/Gettingfeedback', [
                 console.log("3", results.response.index)
                 session.send("Thank you for your valuable feedback and it matters a lot . I am sorry that I am not able to provide the best service this time. I will notify my makers on training me better to serve you ahead. ");
                 // session.send("Thank you for Valuable Feedback");
-                try {
-                    MongoClient.connect(url, function(err, db) {
-                        if (err) {
-                            throw (err);
-                        }
-                        db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '2 Star'}]);
-                        console.log("Connected correctly to server for intent update for Greeting");
-                        db.close();
-                    });
-                } catch (ex) {
-                    console.log('Issue in connecting MONGODB at feedback case 3', ex);
-                }
+                MongoClient.connect(url, function(err, db) {
+                    if (err) {
+                        throw (err);
+                    }
+                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '2 Star'}]);
+                    console.log("Connected correctly to server for intent update for Greeting");
+                    db.close();
+                });
                 session.endDialog();
                 session.replaceDialog('/SubmitFeedback');
                 break;
@@ -1271,19 +1255,15 @@ bot.dialog('/Gettingfeedback', [
                 console.log("4", results.response.index)
                 session.send("Thank you for your valuable feedback  and it matters a lot . Sorry for the inconvenience. I am still learning and I will notify my support team on training me better on the topics that you needed help.");
                 // session.send("Thank you for Valuable Feedback");
-                try {
-                    MongoClient.connect(url, function(err, db) {
-                        if (err) {
-                            //console.log('Issue in connecting MONGODB at feedback case 4');                    
-                            throw (err);
-                        }
-                        db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '1 Star'}]);
-                        console.log("Connected correctly to server for intent update for Greeting");
-                        db.close();
-                    });
-                } catch (err) {
-                    console.log('Issue in connecting MONGODB at feedback case 4');
-                }
+                MongoClient.connect(url, function(err, db) {
+                    if (err) {
+                        //console.log('Issue in connecting MONGODB at feedback case 4');                    
+                        throw (err);
+                    }
+                    db.collection('feedback_tivoli').insert([{"userID": '12345', "feedback": '1 Star'}]);
+                    console.log("Connected correctly to server for intent update for Greeting");
+                    db.close();
+                });
                 session.endDialog();
                 session.replaceDialog('/SubmitFeedback');
                 break;
