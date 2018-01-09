@@ -422,8 +422,12 @@ bot.dialog('/SingleServer', [
                                     'value': 'Test' 
                                 },
                                 {
-                                    'title': 'Dr Test',
-                                    'value': 'Dr Test' 
+                                    'title': 'Dr',
+                                    'value': 'Dr' 
+                                },
+                                {
+                                    'title': 'QA',
+                                    'value': 'QA' 
                                 }
                                 ]
                             },
@@ -785,8 +789,12 @@ bot.dialog('/MultipleServers', [
                                     'value': 'Test' 
                                 },
                                 {
-                                    'title': 'Dr Test',
-                                    'value': 'Dr Test' 
+                                    'title': 'Dr'
+                                    'value': 'Dr' 
+                                },
+                                {
+                                    'title': 'QA',
+                                    'value': 'QA' 
                                 }
                                 ]
                             },
