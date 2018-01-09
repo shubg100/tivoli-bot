@@ -1196,7 +1196,7 @@ bot.dialog('/Gettingfeedback', [
                         }
                         console.log('1311', err);
                         console.log('1312', db);
-                        var collection_feedback = db.collection('feedback');
+                        var collection_feedback = db.collection('feedback_tivoli');
                         console.log("Connected correctly to server for intent update for Greeting");
                         collection_feedback.insert({
                             "userID": '12345',
@@ -1219,7 +1219,7 @@ bot.dialog('/Gettingfeedback', [
                         if (err) {
                             throw (err);
                         }
-                        var collection_feedback = db.collection('feedback');
+                        var collection_feedback = db.collection('feedback_tivoli');
                         console.log("Connected correctly to server for intent update for Greeting");
                         collection_feedback.insert({
                             "userID": '12345',
@@ -1244,7 +1244,7 @@ bot.dialog('/Gettingfeedback', [
                         if (err) {
                             throw (err);
                         }
-                        var collection_feedback = db.collection('feedback');
+                        var collection_feedback = db.collection('feedback_tivoli');
                         console.log("Connected correctly to server for intent update for Greeting");
                         collection_feedback.insert({
                             "userID": '12345',
@@ -1268,7 +1268,7 @@ bot.dialog('/Gettingfeedback', [
                         if (err) {
                             throw (err);
                         }
-                        var collection_feedback = db.collection('feedback');
+                        var collection_feedback = db.collection('feedback_tivoli');
                         console.log("Connected correctly to server for intent update for Greeting");
                         collection_feedback.insert({
                             "userID": '12345',
@@ -1292,7 +1292,7 @@ bot.dialog('/Gettingfeedback', [
                             //console.log('Issue in connecting MONGODB at feedback case 4');                    
                             throw (err);
                         }
-                        var collection_feedback = db.collection('feedback');
+                        var collection_feedback = db.collection('feedback_tivoli');
                         console.log("Connected correctly to server for intent update for Greeting");
                         collection_feedback.insert({
                             "userID": '12345',
