@@ -1518,3 +1518,86 @@ function createHeroCard(session, title, subtitle, text, image) {
             builder.CardImage.create(session, image)
         ]);
 }
+
+var feedback_form = {
+        'contentType': 'application/vnd.microsoft.card.adaptive',
+        'content': {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "1.0",
+        "body": [
+            {
+                "type": "Container",
+                "items": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Feedback Form",
+                        "weight": "bolder",
+                        "size": "medium"
+                    },
+                    {
+                        "type": "ColumnSet",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "width": "auto",
+                                "items": [
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "width": "stretch"
+
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "Container",
+                "items": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Please provide your feedback",
+                        "wrap": true
+                    }
+                ]
+            }
+        ],
+        "actions": [
+                {
+                            "type": "Action.Submit",
+                            "title": "Not Interested",
+                            "data": {
+                            "type": "Not_Interested"
+                            }
+                        
+            },
+            {
+                "type": "Action.ShowCard",
+                "title": "Comment",
+                "card": {
+                    "type": "AdaptiveCard",
+                    "body": [
+                        {
+                            "type": "Input.Text",
+                            "id": "comment",
+                            "isMultiline": true,
+                            "placeholder": "Enter your comment"
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "type": "Action.Submit",
+                            "title": "Submit",
+                            'data': {
+                                'type': 'OK'
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+};
