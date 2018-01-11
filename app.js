@@ -5,7 +5,8 @@ var request = require('request');
 var dateFormat = require('dateformat');
 var moment = require('moment-timezone');
 var randnum = require('random-number-between');
-var emoji = require('node-emoji')
+var emoji = require('node-emoji');
+var mongodb = require('mongodb');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -36,9 +37,11 @@ let mailOptions = {
 
 
 // Connect to MongoDB
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = mongodb.MongoClient;
 //var url = "mongodb://0.0.0.0:27017/shbm_test";
 var url = "mongodb://fplmongodb:0PpoJZCtQJJi6ficNyLHYkK8ywZY8qumIwGp9aXl3sl6zBIemxVEPOJL2ldblFpT5Gtp1Q3lPd7BgCp68odWUg==@fplmongodb.documents.azure.com:10255/DB?ssl=true&sslverifycertificate=false";
+
+var Grid = mongodb.Grid;
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
@@ -1469,14 +1472,24 @@ function validateTivoliRequest(value) {
 
     console.log('Validating.......');
     console.log(value.request_type);
+    
+    if(typeof(value.dir_compress === 'string'))
+        var val1 = formatInputs(value.dir_compress);
+    if(typeof(value.dir_delete === 'string'))
+        var val2 = formatInputs(value.dir_delete);
+    if(typeof(value.dir_delete === 'string'))
+        var val3 = formatInputs(value.backup_dir);
+    
+    console.log(val1 + "|" + val2 + "|" + val3 + "|");
+
     var a = (typeof value.request_type === 'string' && value.request_type != '');
     var b = (typeof value.server_type === 'string' && value.server_type != '');
     var c = (typeof value.host_name === 'string' && value.host_name != '');
-    var d = (typeof value.dir_compress === 'string' && value.dir_compress != '');
-    var e = (typeof value.dir_delete === 'string' && value.dir_delete != '');
+    var d = (typeof value.dir_compress === 'string' && value.dir_compress != '') && /(?:[\w]\:)((\\|\/)[A-Za-z_\-\s0-9\.]+)+/.test(val1);
+    var e = (typeof value.dir_delete === 'string' && value.dir_delete != '') && /(?:[\w]\:)((\\|\/)[A-Za-z_\-\s0-9\.]+)+/.test(val2);
     var f = (typeof value.file_extension === 'string' && value.file_extension != '');
     var g = (typeof value.backup_server === 'string' && value.backup_server != '');
-    var h = (typeof value.backup_dir === 'string' && value.backup_dir != '');
+    var h = (typeof value.backup_dir === 'string' && value.backup_dir != '') && (/(?:[\w]\:)((\\|\/)[A-Za-z_\-\s0-9\.]+)+/.test(val3));
     var i = (typeof value.drhost_name === 'string' && value.drhost_name != '');
     var j = (typeof value.alias === 'string' && value.alias != '');
     var k = (typeof value.server_os === 'string' && value.server_os != '');
@@ -1487,6 +1500,7 @@ function validateTivoliRequest(value) {
     var p = (typeof value.email_id_group === 'string' && value.email_id_group != '');
     var q = (typeof value.add_info === 'string' && value.add_info != '');
     console.log(a+b+c+d+e+f+g+h+i+j+k+l+m);
+    console.log(d,e,h);
     console.log(typeof(i));
     console.log(typeof(value.severity));
 
@@ -1601,3 +1615,15 @@ var feedback_form = {
     }
 
 };
+
+
+function formatInputs(input){
+    var s="";
+    var s1=input.trim();
+    for(var i=0; i<s1.length; i++){
+        s+=input.charAt(i);
+        if(input.charAt(i)=="\\")
+            s+="\\";
+    }
+    return s;
+}
