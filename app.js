@@ -1504,8 +1504,11 @@ function validateTivoliRequest(value) {
     console.log(typeof(i));
     console.log(typeof(value.severity));
 
+    var req1 = setTimeout(function(){ validatePath(val1)}, 3000);
+    var req2 = setTimeout(function(){ validatePath(val2)}, 3000);
+    var req3 = setTimeout(function(){ validatePath(val3)}, 3000);
 
-    if(a && b && c && d && e && f && g && h && i && j && k && l && m && n && o && p && q){
+    if(a && b && c && d && e && f && g && h && i && j && k && l && m && n && o && p && q && req1 && req2 && req3){
         return (value.request_type + '|' + value.server_type + '|' + value.host_name + '|' + value.dir_compress + '|' + value.dir_delete + '|' + 
         	value.file_extension + '|' + value.backup_server + '|' + value.backup_dir + '|' + value.drhost_name + '|' + value.alias + '|' + 
             value.server_os + '|' + value.monitor_info + '|' + value.severity + '|' + value.monitor_threshold + '|' + value.remedy_autotag + 
@@ -1626,4 +1629,29 @@ function formatInputs(input){
             s+="\\";
     }
     return s;
+}
+
+function validatePath(arg){
+	var return_var = false;
+
+	var propertiesObject = { 
+		username: 'fplpoc', 
+		path: arg
+	};
+
+	var url = "http://0b0523f7.ngrok.io/account/";
+
+	request({url:url, qs:propertiesObject}, function(err, response, body) {
+		if(err) { 
+			console.log(err); 
+			return; 
+		}
+		console.log("Get response: " + response.statusCode);
+		console.log(response.body);
+		if(response.statusCode == 200)
+			return_var = true;
+		else return_var = false;
+	});
+
+	return return_var;
 }
