@@ -7,6 +7,7 @@ var moment = require('moment-timezone');
 var randnum = require('random-number-between');
 var emoji = require('node-emoji');
 var mongodb = require('mongodb');
+var fs = require('fs');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -633,7 +634,8 @@ bot.dialog('/SingleServer', [
                                 'type': 'Action.Submit',
                                 'title': 'Submit',
                                 'data': {
-                                    'type': 'SingleServer'
+                                    'type': 'SingleServer',
+                                    'id': randomString(5),
                                 }
                             }
                             ]
@@ -1126,6 +1128,9 @@ bot.dialog('tivoliSubmit', [
             // Preview only available when sending through an Ethereal account
             console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         });
+
+
+
         session.replaceDialog('/sendConfirmationCard');
     }
 ]);
@@ -1402,7 +1407,7 @@ function processSubmitAction(session, value) {
         case 'SingleServer':
             console.log('Inside SingleServer');
             // Search, validate parameters
-            var s = validateTivoliRequest(value);
+            var s = validateTivoliRequest(session, value);
             console.log(s);
             if (s != '') {
                 // proceed to search
@@ -1418,6 +1423,17 @@ function processSubmitAction(session, value) {
                     console.log("inserted data");
                     db.close();
                 });
+                /*
+                // Create a file
+                var content = 'SERVER_NAME::' + value.host_name + '||DIR_COMPRESS::' + value.dir_compress + '||DIR_DELETE::' + value.dir_delete + '||FILE_EXT::' + value.file_extension + 'BACKUP_SERVER::' + value.backup_server + '||BACKUP_DIR::' + value.backup_dir;
+
+				try{
+				    fs.writeFileSync('https://fplblob.blob.core.windows.net/' + session.privateConversationData.randomNumber + '.txt', content);
+				    console.log('******** SUCCESS *********');
+				}catch (e){
+				    console.log("Cannot write file ", e);
+				}
+				*/
                 session.beginDialog('tivoliSubmit', value);
             } else {
                 session.send(defaultErrorMessage);
@@ -1464,14 +1480,13 @@ function processSubmitAction(session, value) {
     }
 }
 
-function validateTivoliRequest(value) {
+function validateTivoliRequest(session, value) {
     if (!value) {
         console.log('false');
         return false;
     }
 
     console.log('Validating.......');
-    console.log(value.request_type);
     
     if(typeof(value.dir_compress === 'string'))
         var val1 = formatInputs(value.dir_compress);
@@ -1508,7 +1523,10 @@ function validateTivoliRequest(value) {
     var req2 = setTimeout(function(){ validatePath(val2)}, 3000);
     var req3 = setTimeout(function(){ validatePath(val3)}, 3000);
 
+    //session.privateConversationData.randomNumber = value.id;
+
     if(a && b && c && d && e && f && g && h && i && j && k && l && m && n && o && p && q && req1 && req2 && req3){
+		//console.log(value.id);
         return (value.request_type + '|' + value.server_type + '|' + value.host_name + '|' + value.dir_compress + '|' + value.dir_delete + '|' + 
         	value.file_extension + '|' + value.backup_server + '|' + value.backup_dir + '|' + value.drhost_name + '|' + value.alias + '|' + 
             value.server_os + '|' + value.monitor_info + '|' + value.severity + '|' + value.monitor_threshold + '|' + value.remedy_autotag + 
@@ -1639,7 +1657,7 @@ function validatePath(arg){
 		path: arg
 	};
 
-	var url = "http://0b0523f7.ngrok.io/account/";
+	var url = "http://34f4e85b.ngrok.io/validate/";
 
 	request({url:url, qs:propertiesObject}, function(err, response, body) {
 		if(err) { 
