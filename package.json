@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "license": "MIT",
-  "author": "Microsoft",
+  "license": "ISC",
+  "author": "",
   "engines": {
     "node": "6.9.1"
   },
@@ -12,10 +12,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "adaptivecards": "^1.0.0-beta9",
+    "azure-storage": "^2.7.0",
     "botbuilder": "^3.12.0",
     "dateformat": "^3.0.2",
     "moment": "^2.20.1",

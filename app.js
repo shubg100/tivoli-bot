@@ -8,6 +8,7 @@ var randnum = require('random-number-between');
 var emoji = require('node-emoji');
 var mongodb = require('mongodb');
 var fs = require('fs');
+var azure = require('azure-storage');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -15,6 +16,8 @@ server.listen(process.env.port || process.env.PORT || 5607, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
 
+//Create Azure storage account object
+var blobService = azure.createBlobService('DefaultEndpointsProtocol=https;AccountName=fplblob;AccountKey=Iam12IyKR12QXCeZhlGFIIVPg8kFYjtMxEa5qwnrOWEYXbdTjbRjpN5km2ZSyBPNOAlUGnBNZHL8GdCfIFRDBw==;EndpointSuffix=core.windows.net');
 
 // Send email
 var nodemailer = require('nodemailer');
@@ -41,8 +44,6 @@ let mailOptions = {
 var MongoClient = mongodb.MongoClient;
 //var url = "mongodb://0.0.0.0:27017/shbm_test";
 var url = "mongodb://fplmongodb:0PpoJZCtQJJi6ficNyLHYkK8ywZY8qumIwGp9aXl3sl6zBIemxVEPOJL2ldblFpT5Gtp1Q3lPd7BgCp68odWUg==@fplmongodb.documents.azure.com:10255/DB?ssl=true&sslverifycertificate=false";
-
-var Grid = mongodb.Grid;
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
@@ -1040,10 +1041,10 @@ bot.dialog('/sendConfirmationCard', [
         // create the card based on selection
         var card;
         if(session.privateConversationData.requestType == "Drive Space Monitor"){
-            card = createHeroCard(session, 'Tivoli Monitoring', 'Drive Space Monitor', '_Here you go, your new Monitor request has been created!!\nYour ticket number is __#SR' + randomString(5) + '___', 'https://upload.wikimedia.org/wikipedia/en/5/56/2015_Florida_Power_%26_Light_Logo.png');
+            card = createHeroCard(session, 'Tivoli Monitoring', 'Drive Space Monitor', '_Here you go, your new Monitor request has been created!!\nYour ticket number is __#SR' + session.privateConversationData.randomNumber + '___', 'https://upload.wikimedia.org/wikipedia/en/5/56/2015_Florida_Power_%26_Light_Logo.png');
         }
         else if(session.privateConversationData.requestType == "File System Monitor"){
-            card = createHeroCard(session, 'Tivoli Monitoring', 'File System Monitor', '_Here you go, your new Monitor request has been created!!\nYour ticket number is __#SR' + randomString(5) + '___', 'https://upload.wikimedia.org/wikipedia/en/5/56/2015_Florida_Power_%26_Light_Logo.png');
+            card = createHeroCard(session, 'Tivoli Monitoring', 'File System Monitor', '_Here you go, your new Monitor request has been created!!\nYour ticket number is __#SR' + session.privateConversationData.randomNumber + '___', 'https://upload.wikimedia.org/wikipedia/en/5/56/2015_Florida_Power_%26_Light_Logo.png');
         }
 
         // attach the card to the reply message
@@ -1423,17 +1424,18 @@ function processSubmitAction(session, value) {
                     console.log("inserted data");
                     db.close();
                 });
-                /*
-                // Create a file
+                
+                // Add content to blob
                 var content = 'SERVER_NAME::' + value.host_name + '||DIR_COMPRESS::' + value.dir_compress + '||DIR_DELETE::' + value.dir_delete + '||FILE_EXT::' + value.file_extension + 'BACKUP_SERVER::' + value.backup_server + '||BACKUP_DIR::' + value.backup_dir;
 
-				try{
-				    fs.writeFileSync('https://fplblob.blob.core.windows.net/' + session.privateConversationData.randomNumber + '.txt', content);
-				    console.log('******** SUCCESS *********');
-				}catch (e){
-				    console.log("Cannot write file ", e);
-				}
-				*/
+                blobService.createBlockBlobFromText('fpl-tivoli-bot-blob', 'SR'+session.privateConversationData.randomNumber, content, function(error, result, response){
+                    if(!error){
+                        // file uploaded
+                        console.log('Content uploaded');
+                    }
+                });
+				
+				
                 session.beginDialog('tivoliSubmit', value);
             } else {
                 session.send(defaultErrorMessage);
@@ -1523,7 +1525,7 @@ function validateTivoliRequest(session, value) {
     var req2 = setTimeout(function(){ validatePath(val2)}, 3000);
     var req3 = setTimeout(function(){ validatePath(val3)}, 3000);
 
-    //session.privateConversationData.randomNumber = value.id;
+    session.privateConversationData.randomNumber = value.id;
 
     if(a && b && c && d && e && f && g && h && i && j && k && l && m && n && o && p && q && req1 && req2 && req3){
 		//console.log(value.id);
