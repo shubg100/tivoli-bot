@@ -30,16 +30,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// setup email data with unicode symbols
-let mailOptions = {
-    from: 'aimcognitivegurgaon@gmail.com', // sender address
-    to: 'shubg101@gmail.com', // list of receivers
-    subject: 'Remedy ticket', // Subject line
-    text: 'Your form has been submitted. Please note your request no #1233432. We will reach out to you shortly.' // plain text body
-    //html: '<b>Hello world?</b>' // html body
-};
-
-
 // Connect to MongoDB
 var MongoClient = mongodb.MongoClient;
 //var url = "mongodb://0.0.0.0:27017/shbm_test";
@@ -100,9 +90,9 @@ bot.on('conversationUpdate', function(message) {
 
 bot.dialog('/startup', [
     function(session) {
-    session.privateConversationData = {};
-    /////////mukesh
-     var now = new Date();
+	    session.privateConversationData = {};
+	    /////////mukesh/*
+	    var now = new Date();
         var currentdate = dateFormat(now, "isoDateTime");
         //var currentday = dateFormat(now, "dddd");
         var jun = moment(currentdate);
@@ -123,17 +113,16 @@ bot.dialog('/startup', [
             session.send("Hi, Good Afternoon !! ");
         } else if ((session.privateConversationData.time_of_day == 'PM') && ((session.privateConversationData.time_digit === "04") || (session.privateConversationData.time_digit === "05") || (session.privateConversationData.time_digit === "6") || (session.privateConversationData.time_digit === "7") || (session.privateConversationData.time_digit === "8") || (session.privateConversationData.time_digit === "9") || (session.privateConversationData.time_digit === "10") || (session.privateConversationData.time_digit === "11"))) {
             session.send("Hi, Good Evening !! ");
-        }
-        /* session.send("This is **Neeva** your Virtual Assistant. We will be providing you the following services.\n1. **WMS**\n2. **Firewall**\n3. **Outlook/Remote Access Support**");   
+        }/*
+        session.send("This is **Neeva** your Virtual Assistant. We will be providing you the following services.\n1. **WMS**\n2. **Firewall**\n3. **Outlook/Remote Access Support**");   
         session.send("Incase you want to come out of any services please type **Main Menu** \nTo end the conversation at any point type **Exit**")  ;   
         session.beginDialog('/Loginbot'); */
-                //builder.Prompts.choice(session, "Welcome to FPL Intelligent Bot Services. Please choose one of the services", ['WMS', 'Firewall','Outlook/Remote Access\nSupport'], {
-                builder.Prompts.choice(session, "This is **Neeva** your Virtual Assistant. We will be providing you the following services.\n1. **WMS**\n2. **Firewall**\n3. **Outlook/Remote Access Support**\n4. **Tivoli** \n\nIncase you want to come out of any services please type **Main Menu** \nTo end the conversation at any point type **Exit**. \nPlease choose one of the services", ['WMS', 'Firewall','Outlook/Remote Access\nSupport', 'Tivoli'], {
+        //builder.Prompts.choice(session, "Welcome to FPL Intelligent Bot Services. Please choose one of the services", ['WMS', 'Firewall','Outlook/Remote Access\nSupport'], {
+        builder.Prompts.choice(session, "This is **Neeva** your Virtual Assistant. We will be providing you the following services.\n1. **WMS**\n2. **Firewall**\n3. **Outlook/Remote Access Support**\n4. **Tivoli** \n\nIncase you want to come out of any services please type **Main Menu** \nTo end the conversation at any point type **Exit**. \nPlease choose one of the services", ['WMS', 'Firewall','Outlook/Remote Access\nSupport', 'Tivoli'], {
             retryPrompt: getString(),
             listStyle: builder.ListStyle.button,
             maxRetries: 2
-        });
-            
+        });   
     },
     function(session, results) {
         if (results.response) {
@@ -384,6 +373,36 @@ bot.dialog('/SingleServer', [
                             },
                             {
                                 'type': 'TextBlock',
+                                'text': 'SLID/Email Id',
+                                'weight': 'bolder'
+                            },
+                            {
+                                'type': 'Input.Text',
+                                'id': 'slid'
+                            },
+                            {
+                                'type': 'TextBlock',
+                                'text': 'Monitor Action',
+                                'weight': 'bolder'
+                            },
+                            {
+                                'type': 'Input.ChoiceSet',
+                                'id': 'monitor_action',
+                                'style': 'text',
+                                'style': 'compact',
+                                'choices': [
+                                {
+                                    'title': 'Create Ticket',
+                                    'value': 'Create Ticket'
+                                },
+                                {
+                                    'title': 'Perform Trigger Action',
+                                    'value': 'Perform Trigger Action' 
+                                }
+                                ]
+                            },
+                            {
+                                'type': 'TextBlock',
                                 'text': 'Request Type',
                                 'weight': 'bolder'
                             },
@@ -475,12 +494,12 @@ bot.dialog('/SingleServer', [
                                 'style': 'compact',
                                 'choices': [
                                 {
-                                    'title': '.log',
-                                    'value': '.log'
+                                    'title': 'log',
+                                    'value': 'log'
                                 },
                                 {
-                                    'title': '.txt',
-                                    'value': '.txt' 
+                                    'title': 'txt',
+                                    'value': 'txt' 
                                 }
                                 ]
                             },
@@ -504,15 +523,6 @@ bot.dialog('/SingleServer', [
                             },
                             {
                                 'type': 'TextBlock',
-                                'text': 'Dr Host name',
-                                'weight': 'bolder'
-                            },
-                            {
-                                'type': 'Input.Text',
-                                'id': 'drhost_name'
-                            },
-                            {
-                                'type': 'TextBlock',
                                 'text': 'Host/Server ALIAS Name',
                                 'weight': 'bolder'
                             },
@@ -532,14 +542,6 @@ bot.dialog('/SingleServer', [
                                 'style': 'compact',
                                 'choices': [
                                 {
-                                    'title': 'Linux',
-                                    'value': 'Linux'
-                                },
-                                {
-                                    'title': 'Unix',
-                                    'value': 'Unix'
-                                },
-                                {
                                     'title': 'Windows',
                                     'value': 'Windows' 
                                 }
@@ -556,11 +558,15 @@ bot.dialog('/SingleServer', [
                                 'style': 'compact',
                                 'choices': [
                                 {
-                                    'title': 'E Drive',
+                                    'title': 'D:/',
+                                    'value': 'D'
+                                },
+                                {
+                                    'title': 'E:/',
                                     'value': 'E'
                                 },
                                 {
-                                    'title': 'F Drive',
+                                    'title': 'F:/',
                                     'value': 'F' 
                                 }
                                 ]
@@ -599,8 +605,27 @@ bot.dialog('/SingleServer', [
                                 'weight': 'bolder'
                             },
                             {
-                                'type': 'Input.Number',
-                                'id': 'monitor_threshold'
+                                'type': 'Input.ChoiceSet',
+                                'id': 'monitor_threshold',
+                                'style': 'compact',
+                                'choices': [
+                                {
+                                    'title': '100%',
+                                    'value': '100'
+                                },
+                                {
+                                    'title': '90%',
+                                    'value': '90' 
+                                },
+                                {
+                                    'title': '80%',
+                                    'value': '80' 
+                                },
+                                {
+                                    'title': '70%',
+                                    'value': '70' 
+                                }
+                                ]
                             },
                             {
                                 'type': 'TextBlock',
@@ -698,7 +723,7 @@ bot.dialog('/MultipleServers', [
                             {
                                 'type': 'Image',
                                 'url': 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAASzAAAAJDQyNjMyMzlkLTI0OTgtNGZlYS1hNzMxLWIyZmQ2NGQ3ZWE5Mg.png',
-                                'size': 'small',
+                                'size': 'medium',
                                 'style': 'person'
                             }
                             ]
@@ -714,17 +739,13 @@ bot.dialog('/MultipleServers', [
                             {
                                 'type': 'TextBlock',
                                 'text': "Hello!",
-                                'weight': 'bolder',
-                                'fontSizes': 'large',
-                                'fontFamily': '"Comic Sans MS", cursive, sans-serif'
+                                'weight': 'bolder'
                             },
                             {
                                 'type': 'TextBlock',
                                 'text': "Welcome to Tivoli Monitoring",
                                 'wrap': true,
-                                'weight': 'bolder',
-                                'fontSizes': 'large',
-                                'fontFamily': '"Comic Sans MS", cursive, sans-serif'
+                                'weight': 'bolder'
                             }
                             ]
                         }
@@ -749,6 +770,36 @@ bot.dialog('/MultipleServers', [
                                 'text': 'Fill the following form',
                                 'weight': 'bolder',
                                 'size': 'large'
+                            },
+                            {
+                                'type': 'TextBlock',
+                                'text': 'SLID/Email Id',
+                                'weight': 'bolder'
+                            },
+                            {
+                                'type': 'Input.Text',
+                                'id': 'slid'
+                            },
+                            {
+                                'type': 'TextBlock',
+                                'text': 'Monitor Action',
+                                'weight': 'bolder'
+                            },
+                            {
+                                'type': 'Input.ChoiceSet',
+                                'id': 'monitor_action',
+                                'style': 'text',
+                                'style': 'compact',
+                                'choices': [
+                                {
+                                    'title': 'Create Ticket',
+                                    'value': 'Create Ticket'
+                                },
+                                {
+                                    'title': 'Perform Trigger Action',
+                                    'value': 'Perform Trigger Action' 
+                                }
+                                ]
                             },
                             {
                                 'type': 'TextBlock',
@@ -843,12 +894,12 @@ bot.dialog('/MultipleServers', [
                                 'style': 'compact',
                                 'choices': [
                                 {
-                                    'title': '.log',
-                                    'value': '.log'
+                                    'title': 'log',
+                                    'value': 'log'
                                 },
                                 {
-                                    'title': '.txt',
-                                    'value': '.txt' 
+                                    'title': 'txt',
+                                    'value': 'txt' 
                                 }
                                 ]
                             },
@@ -872,15 +923,6 @@ bot.dialog('/MultipleServers', [
                             },
                             {
                                 'type': 'TextBlock',
-                                'text': 'Dr Host name',
-                                'weight': 'bolder'
-                            },
-                            {
-                                'type': 'Input.Text',
-                                'id': 'drhost_name'
-                            },
-                            {
-                                'type': 'TextBlock',
                                 'text': 'Host/Server ALIAS Name',
                                 'weight': 'bolder'
                             },
@@ -900,14 +942,6 @@ bot.dialog('/MultipleServers', [
                                 'style': 'compact',
                                 'choices': [
                                 {
-                                    'title': 'Linux',
-                                    'value': 'Linux'
-                                },
-                                {
-                                    'title': 'Unix',
-                                    'value': 'Unix'
-                                },
-                                {
                                     'title': 'Windows',
                                     'value': 'Windows' 
                                 }
@@ -924,11 +958,15 @@ bot.dialog('/MultipleServers', [
                                 'style': 'compact',
                                 'choices': [
                                 {
-                                    'title': 'E Drive',
+                                    'title': 'D:/',
+                                    'value': 'D'
+                                },
+                                {
+                                    'title': 'E:/',
                                     'value': 'E'
                                 },
                                 {
-                                    'title': 'F Drive',
+                                    'title': 'F:/',
                                     'value': 'F' 
                                 }
                                 ]
@@ -967,8 +1005,27 @@ bot.dialog('/MultipleServers', [
                                 'weight': 'bolder'
                             },
                             {
-                                'type': 'Input.Number',
-                                'id': 'monitor_threshold'
+                                'type': 'Input.ChoiceSet',
+                                'id': 'monitor_threshold',
+                                'style': 'compact',
+                                'choices': [
+                                {
+                                    'title': '100%',
+                                    'value': '100'
+                                },
+                                {
+                                    'title': '90%',
+                                    'value': '90' 
+                                },
+                                {
+                                    'title': '80%',
+                                    'value': '80' 
+                                },
+                                {
+                                    'title': '70%',
+                                    'value': '70' 
+                                }
+                                ]
                             },
                             {
                                 'type': 'TextBlock',
@@ -1003,7 +1060,8 @@ bot.dialog('/MultipleServers', [
                                 'type': 'Action.Submit',
                                 'title': 'Submit',
                                 'data': {
-                                    'type': 'SingleServer'
+                                    'type': 'SingleServer',
+                                    'id': randomString(5),
                                 }
                             }
                             ]
@@ -1117,8 +1175,25 @@ bot.dialog('/cancelForm',[
 ]);
 
 bot.dialog('tivoliSubmit', [
-    function(session){
+    function(session, value){
+        console.log('**************************');
+        console.log(session.message);
         session.send('Thank You. Your request has been submitted. We will reach out shortly.');
+        var content = 'Your form has been submitted. Please note your request no SR' + session.privateConversationData.randomNumber + '. We will reach out to you shortly.\n\n' + 
+                    'Request Name:' + session.privateConversationData.requestType + '\n' + 'SLID/Email ID:' + value.slid + '\n' + 'Monitor Action:' + value.monitor_action + '\n' + 
+                    'Request Type:' + value.request_type + '\n' + 'Server Type:' + value.server_type + '\n' + 'Host/Server Name:' + value.host_name + '\n' + 'DIR Compress:' + 
+                    value.dir_compress + '\n' + 'DIR Delete:' + value.dir_delete + '\n' + 'File Extension:' + value.file_extension + '\n' + 'Backup Server:' + value.backup_server
+                    + '\n' + 'Backup DIR:' + value.backup_dir + '\n' + 'Alias:' + value.alias + '\n' + 'Server OS:' + value.server_os + '\n' + 'Monitor Info:' + value.monitor_info 
+                    + '\n' + 'Severity:' + value.severity + '\n' + 'Monitor Threshold:' + value.monitor_threshold + '\n' + 'Remedy AutoTag:' + value.remedy_autotag + '\n' + 
+                    'Email ID Group Name:' + value.email_id_group + '\n' + 'Additional Info:' + value.add_info + '\n';
+        // setup email data with unicode symbols
+		let mailOptions = {
+		    from: 'aimcognitivegurgaon@gmail.com', // sender address
+		    to: 'Karthik.Natarajan@fpl.com', // list of receivers
+		    subject: 'Remedy ticket', // Subject line
+		    text: content // plain text body*/
+		    //html: '<b>Hello world</b>' // html body
+		};
 
         // send mail with defined transport object
         transporter.sendMail(mailOptions, (error, info) => {
@@ -1129,8 +1204,6 @@ bot.dialog('tivoliSubmit', [
             // Preview only available when sending through an Ethereal account
             console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         });
-
-
 
         session.replaceDialog('/sendConfirmationCard');
     }
@@ -1416,10 +1489,10 @@ function processSubmitAction(session, value) {
                 var arr = s.split('|');
                 MongoClient.connect(url,function(err,db) {
                     if (err) throw err;
-                    db.collection("tivoliSingleServer").insert([{requestName:session.privateConversationData.requestType, requestType:arr[0], serverType:arr[1], host_serverName:arr[2], 
-                    	DIRCompress:arr[3], DIRDelete:arr[4], fileExtension:arr[5], backupServer:arr[6], backupDIR:arr[7], drhostName:arr[8], alias:arr[9], 
-                    	serverOS:arr[10], monitorInfo:arr[11], severity:arr[12], monitorThreshold:arr[13], remedyAutoTag:arr[14], 
-                    	emailIDGroupName:arr[15], additionalInfo:arr[16]
+                    db.collection("tivoliSingleServer").insert([{requestName:session.privateConversationData.requestType, slid:arr[0], monitorAction:arr[1], 
+                    	requestType:arr[2], serverType:arr[3], host_serverName:arr[4], DIRCompress:arr[5], DIRDelete:arr[6], fileExtension:arr[7], backupServer:arr[8], 
+                    	backupDIR:arr[9], alias:arr[10], serverOS:arr[11], monitorInfo:arr[12], severity:arr[13], monitorThreshold:arr[14], remedyAutoTag:arr[15], 
+                    	emailIDGroupName:arr[16], additionalInfo:arr[17]
                     }]);
                     console.log("inserted data");
                     db.close();
@@ -1507,7 +1580,7 @@ function validateTivoliRequest(session, value) {
     var f = (typeof value.file_extension === 'string' && value.file_extension != '');
     var g = (typeof value.backup_server === 'string' && value.backup_server != '');
     var h = (typeof value.backup_dir === 'string' && value.backup_dir != '') && (/(?:[\w]\:)((\\|\/)[A-Za-z_\-\s0-9\.]+)+/.test(val3));
-    var i = (typeof value.drhost_name === 'string' && value.drhost_name != '');
+    var i = (typeof value.slid === 'string' && value.slid != '');
     var j = (typeof value.alias === 'string' && value.alias != '');
     var k = (typeof value.server_os === 'string' && value.server_os != '');
     var l = (typeof value.monitor_info === 'string' && value.monitor_info != '');
@@ -1516,7 +1589,15 @@ function validateTivoliRequest(session, value) {
     var o = (typeof value.remedy_autotag === 'string' && value.remedy_autotag != '');
     var p = (typeof value.email_id_group === 'string' && value.email_id_group != '');
     var q = (typeof value.add_info === 'string' && value.add_info != '');
-    console.log(a+b+c+d+e+f+g+h+i+j+k+l+m);
+    var r = (typeof value.monitor_action === 'string' && value.monitor_action != '');
+
+    if(value.monitor_action=='Perform Trigger Request') r = true;
+    if(value.slid=='SXG03GL' || value.slid=='MXN0DFR' || value.slid=='AXP0TNS' || value.slid=='') 
+        i = true;
+    else 
+        i = false;
+
+    console.log(a+b+c+d+e+f+g+h+i+j+k+l+m+o+p+q+r);
     console.log(d,e,h);
     console.log(typeof(i));
     console.log(typeof(value.severity));
@@ -1527,9 +1608,9 @@ function validateTivoliRequest(session, value) {
 
     session.privateConversationData.randomNumber = value.id;
 
-    if(a && b && c && d && e && f && g && h && i && j && k && l && m && n && o && p && q && req1 && req2 && req3){
+    if(a && b && c && d && e && f && g && h && i && j && k && l && m && n && o && p && q && r && req1 && req2 && req3){
 		//console.log(value.id);
-        return (value.request_type + '|' + value.server_type + '|' + value.host_name + '|' + value.dir_compress + '|' + value.dir_delete + '|' + 
+        return (value.slid + '|' + value.monitor_action + '|' + value.request_type + '|' + value.server_type + '|' + value.host_name + '|' + value.dir_compress + '|' + value.dir_delete + '|' + 
         	value.file_extension + '|' + value.backup_server + '|' + value.backup_dir + '|' + value.drhost_name + '|' + value.alias + '|' + 
             value.server_os + '|' + value.monitor_info + '|' + value.severity + '|' + value.monitor_threshold + '|' + value.remedy_autotag + 
             '|' + value.email_id_group + '|' + value.add_info + '|');
@@ -1667,8 +1748,9 @@ function validatePath(arg){
 			return; 
 		}
 		console.log("Get response: " + response.statusCode);
-		console.log(response.body);
-		if(response.statusCode == 200)
+		var obj = JSON.parse(response.body);
+		console.log(obj);
+		if(obj.path == "does not exist")
 			return_var = true;
 		else return_var = false;
 	});
